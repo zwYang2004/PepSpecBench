@@ -1,0 +1,77 @@
+experiment:
+  name: DeepSpecBench_prospect_predfull_resume
+  seed: 42
+  output_root: output/
+  deterministic: true
+
+paths:
+  fastspel_wrapper: scripts/train/run_fastspel.py
+  predfull_train_torch: external/PredFull/train_model_torch.py
+  predfull_eval_torch: external/PredFull/eval_predfull_torch.py
+
+filters:
+  max_charge: 6
+  min_len: 7
+  max_len: 40
+  allowed_unimod_ids: [1, 4, 35]
+  action: auto_filter
+  report_rows: 10000
+
+metrics:
+  primary: val_median_sas
+  spectral_angle:
+    definition: acos(cos_sim)/pi
+    higher_is_better: false
+  spectral_angle_similarity:
+    definition: 1 - spectral_angle
+    higher_is_better: true
+
+protocol:
+  optimizer:
+    name: AdamW
+    weight_decay: 0.01
+  scheduler:
+    name: CosineAnnealing
+    warmup_ratio: 0.05
+  early_stopping:
+    metric: val_median_sas
+    mode: max
+    patience: 10
+
+datasets:
+  prospect_unimod135:
+    name: PROSPECT
+    format: parquet
+    schema: prospect
+    train:
+      path: data/Prospect_parquet/Prospect_merged_unimod135/train.charge_le6.unimod135.parquet
+    val:
+      path: data/Prospect_parquet/Prospect_merged_unimod135/val.charge_le6.unimod135.parquet
+    test:
+      path: data/Prospect_parquet/Prospect_merged_unimod135/test.charge_le6.unimod135.parquet
+      subsets:
+        all:
+          path: data/Prospect_parquet/Prospect_merged_unimod135/test.charge_le6.unimod135.parquet
+        unmod:
+          path: data/Prospect_parquet/Prospect_merged_unimod135/test_unmod.charge_le6.unimod135.parquet
+        ptm:
+          path: data/Prospect_parquet/Prospect_merged_unimod135/test_ptm.charge_le6.unimod135.parquet
+
+models:
+  predfull_torch:
+    active: true
+    type: deep_gpu
+    batch_size: 1024
+    base_lr: 3.0e-4
+    max_epochs: 100
+    num_workers: 8
+    dataset_version: "135"
+    resume_from: output/benchmark_prospect_unimod135_20260102_232717/predfull_torch/predfull_torch.pt
+    constraints:
+      max_charge: 6
+      max_len: 40
+      allowed_unimod_ids: [1, 4, 35]
+    train:
+      enabled: true
+    eval:
+      enabled: true

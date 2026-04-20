@@ -1,0 +1,135 @@
+experiment:
+  name: DeepSpecBench_unimod135_v1_dual_gpu
+  seed: 42
+  output_root: output/
+  deterministic: true
+
+paths:
+  fastspel_wrapper: scripts/train/run_fastspel.py
+  predfull_train_torch: external/PredFull/train_model_torch.py
+  predfull_eval_torch: external/PredFull/eval_predfull_torch.py
+
+filters:
+  max_charge: 6
+  min_len: 7
+  max_len: 40
+  allowed_unimod_ids:
+    - 1
+    - 4
+    - 35
+  action: auto_filter
+  report_rows: 10000
+
+metrics:
+  primary: val_median_sas
+  spectral_angle:
+    definition: acos(cos_sim)/pi
+    higher_is_better: false
+  spectral_angle_similarity:
+    definition: 1 - spectral_angle
+    higher_is_better: true
+
+protocol:
+  optimizer:
+    name: AdamW
+    weight_decay: 0.01
+  scheduler:
+    name: CosineAnnealing
+    warmup_ratio: 0.05
+  early_stopping:
+    metric: val_median_sas
+    mode: max
+    patience: 10
+
+datasets:
+  massive_kb_unimod135:
+    name: MassIVE-KB
+    format: parquet
+    schema: massive_kb
+    train:
+      path: data/MassIVE-KB/processed_charge_le6_unimod135/train
+    val:
+      path: data/MassIVE-KB/processed_charge_le6_unimod135/val
+    test:
+      path: data/MassIVE-KB/processed_charge_le6_unimod135/test
+      subsets:
+        all:
+          path: data/MassIVE-KB/processed_charge_le6_unimod135/test
+        unmod:
+          path: data/MassIVE-KB/processed_charge_le6_unimod135/test/unmod_test.charge_le6.unimod135.parquet
+        ptm:
+          path: data/MassIVE-KB/processed_charge_le6_unimod135/test/ptm_test.charge_le6.unimod135.parquet
+
+  massive_kb_unimod135_234d:
+    name: MassIVE-KB
+    format: parquet
+    schema: massive_kb
+    train:
+      path: data/MassIVE-KB/processed_charge_le6_unimod135_234d/train
+    val:
+      path: data/MassIVE-KB/processed_charge_le6_unimod135_234d/val
+    test:
+      path: data/MassIVE-KB/processed_charge_le6_unimod135_234d/test
+      subsets:
+        all:
+          path: data/MassIVE-KB/processed_charge_le6_unimod135_234d/test
+        unmod:
+          path: data/MassIVE-KB/processed_charge_le6_unimod135_234d/test/unmod_test.charge_le6.unimod135.parquet
+        ptm:
+          path: data/MassIVE-KB/processed_charge_le6_unimod135_234d/test/ptm_test.charge_le6.unimod135.parquet
+
+  prospect_unimod135:
+    name: PROSPECT
+    format: parquet
+    schema: prospect
+    train:
+      path: data/Prospect_parquet/Prospect_merged_unimod135/train.charge_le6.unimod135.parquet
+    val:
+      path: data/Prospect_parquet/Prospect_merged_unimod135/val.charge_le6.unimod135.parquet
+    test:
+      path: data/Prospect_parquet/Prospect_merged_unimod135/test.charge_le6.unimod135.parquet
+      subsets:
+        all:
+          path: data/Prospect_parquet/Prospect_merged_unimod135/test.charge_le6.unimod135.parquet
+        unmod:
+          path: data/Prospect_parquet/Prospect_merged_unimod135/test_unmod.charge_le6.unimod135.parquet
+        ptm:
+          path: data/Prospect_parquet/Prospect_merged_unimod135/test_ptm.charge_le6.unimod135.parquet
+
+  prospect_unimod135_234d:
+    name: PROSPECT
+    format: parquet
+    schema: prospect
+    train:
+      path: data/Prospect_parquet/Prospect_merged_unimod135_234d/train.charge_le6.unimod135.parquet
+    val:
+      path: data/Prospect_parquet/Prospect_merged_unimod135_234d/val.charge_le6.unimod135.parquet
+    test:
+      path: data/Prospect_parquet/Prospect_merged_unimod135_234d/test.charge_le6.unimod135.parquet
+      subsets:
+        all:
+          path: data/Prospect_parquet/Prospect_merged_unimod135_234d/test.charge_le6.unimod135.parquet
+        unmod:
+          path: data/Prospect_parquet/Prospect_merged_unimod135_234d/test_unmod.charge_le6.unimod135.parquet
+        ptm:
+          path: data/Prospect_parquet/Prospect_merged_unimod135_234d/test_ptm.charge_le6.unimod135.parquet
+
+models:
+  alphapeptdeep:
+    active: true
+    type: deep_gpu
+    batch_size: 1024
+    base_lr: 1.0e-5  # AlphaPeptDeep original LR from peptdeep/model/ms2.py
+    max_epochs: 200
+    frag_types: [b, y]
+    max_frag_charge: 2
+    label_column: intensities_raw
+    num_workers: 16
+    constraints:
+      max_charge: 6
+      max_len: 40
+      allowed_unimod_ids: [1, 4, 35]
+    train:
+      enabled: true
+    eval:
+      enabled: true

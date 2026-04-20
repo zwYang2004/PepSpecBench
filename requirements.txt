@@ -1,0 +1,70 @@
+# MS2_Benchmark (DeepSpecBench) Dependencies
+# ============================================
+# Recommended: Create conda environment with Python 3.10
+#   conda create -n ms2benchmark python=3.10
+#   conda activate ms2benchmark
+#
+# Install PyTorch first (CUDA 12.1 example):
+#   pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cu121
+#
+# Then install this requirements file:
+#   pip install -r requirements.txt
+
+# ===========================================
+# Core Data Processing
+# ===========================================
+numpy>=1.26.0
+pandas>=2.0.0
+pyarrow>=14.0.0
+h5py>=3.9.0
+
+# ===========================================
+# Mass Spectrometry & Proteomics
+# ===========================================
+pyteomics>=4.6.0
+lxml>=4.9.0
+
+# ===========================================
+# Deep Learning Framework
+# ===========================================
+torch>=2.0.0
+transformers>=4.30.0
+scikit-learn>=1.2.0
+datasets>=2.14.0  # Required by DLOmix
+boto3>=1.28.0     # Required by TAPE
+tape-proteins>=0.5
+
+# ===========================================
+# AlphaPeptDeep Dependencies (for MS2 prediction)
+# ===========================================
+alphabase>=1.6.0
+alpharaw>=0.2.0
+# peptdeep is included in external/alphapeptdeep, no pip install needed
+
+# ===========================================
+# Visualization & Logging
+# ===========================================
+matplotlib>=3.6.0
+tensorboard>=2.12.0
+tqdm>=4.65.0
+
+# ===========================================
+# Utilities
+# ===========================================
+pyyaml>=6.0
+click>=8.1.0
+numba>=0.57.0
+psutil>=5.9.0; python_version >= "3.7"
+
+# ===========================================
+# Model-Specific Dependencies
+# ===========================================
+# FastSpel: Install from external/fastspel-0.1.0/
+#   cd external/fastspel-0.1.0 && pip install -e .
+#
+# PrositTransformer: Requires tape-proteins
+#   pip install tape-proteins
+#
+# UniSpec: Code in external/UniSpec/, no separate install needed
+#
+# DLOmix (Prosit): Code in external/dlomix/, set DLOMIX_BACKEND=torch

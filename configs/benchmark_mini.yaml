@@ -1,0 +1,78 @@
+
+experiment:
+  name: DeepSpecBench_mini_debug
+  seed: 42
+  output_root: output/
+  deterministic: true
+
+paths:
+  fastspel_wrapper: scripts/train/run_fastspel.py
+  predfull_train_torch: external/PredFull/train_model_torch.py
+  predfull_eval_torch: external/PredFull/eval_predfull_torch.py
+
+filters:
+  max_charge: 6
+  min_len: 7
+  max_len: 40
+  allowed_unimod_ids:
+    - 1
+    - 4
+    - 35
+  action: auto_filter
+  report_rows: 10000
+
+metrics:
+  primary: val_median_sas
+  spectral_angle:
+    definition: acos(cos_sim)/pi
+    higher_is_better: false
+  spectral_angle_similarity:
+    definition: 1 - spectral_angle
+    higher_is_better: true
+
+protocol:
+  optimizer:
+    name: AdamW
+    weight_decay: 0.01
+  scheduler:
+    name: CosineAnnealing
+    warmup_ratio: 0.05
+  early_stopping:
+    metric: val_median_sas
+    mode: max
+    patience: 10
+
+datasets:
+  prospect_mini:
+    name: PROSPECT_MINI
+    format: parquet
+    schema: prospect
+    train:
+      path: data/Prospect_mini/train.parquet
+    val:
+      path: data/Prospect_mini/val.parquet
+    test:
+      path: data/Prospect_mini/test.parquet
+      subsets:
+        all:
+          path: data/Prospect_mini/test.parquet
+
+models:
+  alphapeptdeep:
+    active: true
+    type: deep_gpu
+    batch_size: 64  # Smaller batch size for mini test
+    base_lr: 1.0e-5
+    max_epochs: 2   # Fewer epochs for debug
+    frag_types: [b, y]
+    max_frag_charge: 2
+    label_column: intensities_raw
+    num_workers: 0  # Avoid multiprocess issues in debug
+    constraints:
+      max_charge: 6
+      max_len: 40
+      allowed_unimod_ids: [1, 4, 35]
+    train:
+      enabled: true
+    eval:
+      enabled: true

@@ -1,0 +1,330 @@
+experiment:
+  name: DeepSpecBench_unimod135_v1
+  seed: 42
+  output_root: output/
+  deterministic: true
+
+paths:
+  fastspel_wrapper: scripts/train/run_fastspel.py
+  predfull_train_torch: external/PredFull/train_model_torch.py
+  predfull_eval_torch: external/PredFull/eval_predfull_torch.py
+
+filters:
+  max_charge: 6
+  min_len: 6
+  max_len: 40
+  allowed_unimod_ids:
+    - 1
+    - 4
+    - 35
+  action: auto_filter
+  report_rows: 10000
+
+metrics:
+  primary: val_median_sas
+  spectral_angle:
+    definition: acos(cos_sim)/pi
+    higher_is_better: false
+  spectral_angle_similarity:
+    definition: 1 - spectral_angle
+    higher_is_better: true
+
+protocol:
+  optimizer:
+    name: AdamW
+    weight_decay: 0.01
+  scheduler:
+    name: CosineAnnealing
+    warmup_ratio: 0.05
+  early_stopping:
+    patience: 5
+    metric: val_median_sas
+    mode: max
+    active: true
+
+datasets:
+  massive_kb_unimod135:
+    name: MassIVE-KB
+    format: parquet
+    schema: massive_kb
+    train:
+      path: data/MassIVE-KB/processed_charge_le6_unimod135/train
+    val:
+      path: data/MassIVE-KB/processed_charge_le6_unimod135/val
+    test:
+      path: data/MassIVE-KB/processed_charge_le6_unimod135/test
+      subsets:
+        all:
+          path: data/MassIVE-KB/processed_charge_le6_unimod135/test
+        unmod:
+          path: data/MassIVE-KB/processed_charge_le6_unimod135/test/unmod_test.charge_le6.unimod135.parquet
+        ptm:
+          path: data/MassIVE-KB/processed_charge_le6_unimod135/test/ptm_test.charge_le6.unimod135.parquet
+
+  massive_kb_unimod135_234d:
+    name: MassIVE-KB
+    format: parquet
+    schema: massive_kb
+    train:
+      path: data/MassIVE-KB/processed_charge_le6_unimod135_234d/train
+    val:
+      path: data/MassIVE-KB/processed_charge_le6_unimod135_234d/val
+    test:
+      path: data/MassIVE-KB/processed_charge_le6_unimod135_234d/test
+      subsets:
+        all:
+          path: data/MassIVE-KB/processed_charge_le6_unimod135_234d/test
+        unmod:
+          path: data/MassIVE-KB/processed_charge_le6_unimod135_234d/test/unmod_test.charge_le6.unimod135.parquet
+        ptm:
+          path: data/MassIVE-KB/processed_charge_le6_unimod135_234d/test/ptm_test.charge_le6.unimod135.parquet
+
+  massive_kb_mini:
+    name: MassIVE-KB-Mini
+    format: parquet
+    schema: massive_kb
+    train:
+      path: data/reconstructed/massive_kb/all/train.parquet
+    val:
+      path: data/reconstructed/massive_kb/all/val.parquet
+    test:
+      path: data/reconstructed/massive_kb/all/test.parquet
+      subsets:
+        all:
+          path: data/reconstructed/massive_kb/all/test.parquet
+
+  massive_kb_mini_234d:
+    name: MassIVE-KB-Mini
+    format: parquet
+    schema: massive_kb
+    train:
+      path: data/reconstructed/massive_kb/234d/train.parquet
+    val:
+      path: data/reconstructed/massive_kb/234d/val.parquet
+    test:
+      path: data/reconstructed/massive_kb/234d/test.parquet
+      subsets:
+        all:
+          path: data/reconstructed/massive_kb/234d/test.parquet
+
+  prospect_unimod135:
+    name: PROSPECT
+    format: parquet
+    schema: prospect
+    train:
+      path: data/Prospect_parquet/Prospect_merged_unimod135/train.charge_le6.unimod135.parquet
+    val:
+      path: data/Prospect_parquet/Prospect_merged_unimod135/val.charge_le6.unimod135.parquet
+    test:
+      path: data/Prospect_parquet/Prospect_merged_unimod135/test.charge_le6.unimod135.parquet
+      subsets:
+        all:
+          path: data/Prospect_parquet/Prospect_merged_unimod135/test.charge_le6.unimod135.parquet
+        unmod:
+          path: data/Prospect_parquet/Prospect_merged_unimod135/test_unmod.charge_le6.unimod135.parquet
+        ptm:
+          path: data/Prospect_parquet/Prospect_merged_unimod135/test_ptm.charge_le6.unimod135.parquet
+
+  prospect_unimod135_234d:
+    name: PROSPECT
+    format: parquet
+    schema: prospect
+    train:
+      path: data/Prospect_parquet/Prospect_merged_unimod135_234d/train.charge_le6.unimod135.parquet
+    val:
+      path: data/Prospect_parquet/Prospect_merged_unimod135_234d/val.charge_le6.unimod135.parquet
+    test:
+      path: data/Prospect_parquet/Prospect_merged_unimod135_234d/test.charge_le6.unimod135.parquet
+      subsets:
+        all:
+          path: data/Prospect_parquet/Prospect_merged_unimod135_234d/test.charge_le6.unimod135.parquet
+        unmod:
+          path: data/Prospect_parquet/Prospect_merged_unimod135_234d/test_unmod.charge_le6.unimod135.parquet
+        ptm:
+          path: data/Prospect_parquet/Prospect_merged_unimod135_234d/test_ptm.charge_le6.unimod135.parquet
+
+  prospect_mini:
+    name: PROSPECT-Mini
+    format: parquet
+    schema: prospect
+    train:
+      path: data/reconstructed/prospect/all/train.parquet
+    val:
+      path: data/reconstructed/prospect/all/val.parquet
+    test:
+      path: data/reconstructed/prospect/all/test.parquet
+      subsets:
+        all:
+          path: data/reconstructed/prospect/all/test.parquet
+
+  prospect_mini_234d:
+    name: PROSPECT-Mini
+    format: parquet
+    schema: prospect
+    train:
+      path: data/reconstructed/prospect/234d/train.parquet
+    val:
+      path: data/reconstructed/prospect/234d/val.parquet
+    test:
+      path: data/reconstructed/prospect/234d/test.parquet
+      subsets:
+        all:
+          path: data/reconstructed/prospect/234d/test.parquet
+
+  # Ablation: Random split (max leakage)
+  prospect_mini_random_234d:
+    name: PROSPECT-Mini-Random
+    format: parquet
+    schema: prospect
+    train:
+      path: data/reconstructed/prospect_quick_random_234d/train.parquet
+    val:
+      path: data/reconstructed/prospect_quick_random_234d/val.parquet
+    test:
+      path: data/reconstructed/prospect_quick_random_234d/test.parquet
+      subsets:
+        all:
+          path: data/reconstructed/prospect_quick_random_234d/test.parquet
+
+  # Ablation: Sequence split (PTM-variant leakage)
+  prospect_mini_sequence_234d:
+    name: PROSPECT-Mini-Sequence
+    format: parquet
+    schema: prospect
+    train:
+      path: data/reconstructed/prospect_quick_sequence_234d/train.parquet
+    val:
+      path: data/reconstructed/prospect_quick_sequence_234d/val.parquet
+    test:
+      path: data/reconstructed/prospect_quick_sequence_234d/test.parquet
+      subsets:
+        all:
+          path: data/reconstructed/prospect_quick_sequence_234d/test.parquet
+
+models:
+  fastspel:
+    active: true
+    type: linear_cpu
+    scheme_b_unimod1_feature: true
+    batch_size: 4096
+    constraints:
+      max_charge: 6
+      max_len: 40
+      min_len: 6
+      allowed_unimod_ids: [1, 4, 35]
+    train:
+      enabled: true
+    eval:
+      enabled: true
+
+  predfull_torch:
+    active: true
+    type: deep_gpu
+    batch_size: 32
+    base_lr: 3.0e-4
+    max_epochs: 100
+    num_workers: 8
+    dataset_version: "135"  # PredFull predicts full spectrum, needs 135-dim labels
+    output_dim: 20000      # 20000=20k-bin (default); 234 or 174 = PredFull-234d/174d ion-tensor variant
+    constraints:
+      max_charge: 6
+      max_len: 40
+      allowed_unimod_ids: [1, 4, 35]
+    train:
+      enabled: true
+    eval:
+      enabled: true
+
+  prosit:
+    active: true
+    type: deep_gpu
+    batch_size: 64
+    base_lr: 1.0e-4
+    max_epochs: 200
+    num_workers: 8
+    constraints:
+      max_charge: 6
+      max_len: 40
+      allowed_unimod_ids: [1, 4, 35]
+    train:
+      enabled: true
+    eval:
+      enabled: true
+
+  prosit_transformer:
+    active: true
+    type: deep_gpu
+    batch_size: 32
+    base_lr: 1.0e-4  # Transformer needs lower LR (original: 5e-5 ~ 1e-4)
+    max_epochs: 200
+    num_workers: 8
+    freeze_encoder: false
+    decoder_layers: 4
+    constraints:
+      max_charge: 6
+      max_len: 40
+      allowed_unimod_ids: [1, 4, 35]
+    train:
+      enabled: true
+    eval:
+      enabled: true
+
+  unispec:
+    active: true
+    type: deep_gpu
+    batch_size: 64
+    base_lr: 1.0e-4
+    max_epochs: 200
+    num_workers: 8
+    dict_dir: external/UniSpec/saved_models/unispec23
+    dict_min_peaks: 5
+    label_column: intensities_raw
+    dataset_version: "234d"  # 234-d canonical ion space (方案 A): 与 Prosit/AlphaPeptDeep 对齐，消除投影混淆
+    constraints:
+      max_charge: 6
+      max_len: 40
+      allowed_unimod_ids: [1, 4, 35]
+    train:
+      enabled: true
+    eval:
+      enabled: true
+
+  # PredFull-234d: ion-tensor variant for OOD ablation (same backbone, SA loss, 234-d output)
+  predfull_torch_234d:
+    active: true
+    type: deep_gpu
+    batch_size: 32
+    base_lr: 3.0e-4
+    max_epochs: 100
+    num_workers: 8
+    dataset_version: "234d"
+    output_dim: 234
+    constraints:
+      max_charge: 6
+      max_len: 40
+      allowed_unimod_ids: [1, 4, 35]
+    train:
+      enabled: true
+    eval:
+      enabled: true
+
+  alphapeptdeep:
+    active: true
+    type: deep_gpu
+    batch_size: 512
+    base_lr: 1.0e-5  # AlphaPeptDeep original LR from peptdeep/model/ms2.py
+    max_epochs: 200
+    patience: 5  # Early stopping: stop when train loss does not improve for N epochs
+    # resume_from: /path/to/alphapeptdeep.pt  # Optional: load weights before training (warm-start)
+    frag_types: [b, y]
+    max_frag_charge: 2
+    label_column: intensities_raw
+    num_workers: 0
+    constraints:
+      max_charge: 6
+      max_len: 40
+      allowed_unimod_ids: [1, 4, 35]
+    train:
+      enabled: true
+    eval:
+      enabled: true

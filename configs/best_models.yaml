@@ -1,0 +1,58 @@
+# Best checkpoint registry for evaluation-only benchmarks.
+#
+# Conventions:
+# - Keys are model names used by scripts/run_benchmark.py (MODEL_REGISTRY)
+# - For each model you can specify either:
+#   - checkpoint: /abs/or/relative/path
+#   - checkpoints: {<dataset_key>: /path, default: /path}
+# - dataset_key must match one of:
+#   - prospect_unimod135
+#   - prospect_unimod135_234d
+#   - massive_kb_unimod135
+#   - massive_kb_unimod135_234d
+# - ood_source controls which trained checkpoint is used for OOD evaluation.
+#   Defaults:
+#   - predfull_torch, unispec -> prospect_unimod135
+#   - others -> prospect_unimod135_234d
+#
+# NOTE:
+# This release file is a portable template. Replace placeholder checkpoint paths
+# with your local trained model artifacts before running
+# scripts/run_best_models_benchmark.py.
+
+best_models:
+  fastspel:
+    checkpoints:
+      prospect_unimod135_234d: output/checkpoints/fastspel/prospect_unimod135_234d/X.npz
+      massive_kb_unimod135_234d: output/checkpoints/fastspel/massive_kb_unimod135_234d/X.npz
+    ood_source: prospect_unimod135_234d
+
+  alphapeptdeep:
+    checkpoints:
+      prospect_unimod135_234d: output/checkpoints/alphapeptdeep/prospect_unimod135_234d/alphapeptdeep.pt
+      massive_kb_unimod135_234d: output/checkpoints/alphapeptdeep/massive_kb_unimod135_234d/alphapeptdeep.pt
+    ood_source: prospect_unimod135_234d
+
+  prosit:
+    checkpoints:
+      prospect_unimod135_234d: output/checkpoints/prosit/prospect_unimod135_234d/prosit.pt
+      massive_kb_unimod135_234d: output/checkpoints/prosit/massive_kb_unimod135_234d/prosit.pt
+    ood_source: prospect_unimod135_234d
+
+  prosit_transformer:
+    checkpoints:
+      prospect_unimod135_234d: output/checkpoints/prosit_transformer/prospect_unimod135_234d/prosit_transformer.pt
+      massive_kb_unimod135_234d: output/checkpoints/prosit_transformer/massive_kb_unimod135_234d/prosit_transformer.pt
+    ood_source: prospect_unimod135_234d
+
+  predfull_torch:
+    checkpoints:
+      prospect_unimod135: output/checkpoints/predfull_torch/prospect_unimod135/predfull_torch.pt
+      massive_kb_unimod135: output/checkpoints/predfull_torch/massive_kb_unimod135/predfull_torch.pt
+    ood_source: prospect_unimod135
+
+  unispec:
+    checkpoints:
+      prospect_unimod135: output/checkpoints/unispec/prospect_unimod135/unispec.pt
+      massive_kb_unimod135: output/checkpoints/unispec/massive_kb_unimod135/unispec.pt
+    ood_source: prospect_unimod135
