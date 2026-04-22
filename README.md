@@ -9,7 +9,7 @@ This repository provides a minimal, reproducible code release for PepSpecBench:
 - metadata sensitivity analysis (NCE/charge),
 - figure/table regeneration scripts used by the manuscript.
 
-Official reporting uses the shared canonical `level1` metrics only.
+Official reporting uses the shared canonical metrics only (Note: referred to as 'level1' metrics in the codebase).
 
 ## Dataset Access
 The fully processed, benchmark-ready datasets (including PROSPECT, MassIVE-KB, and OOD evaluation bundles) are hosted on Hugging Face:
