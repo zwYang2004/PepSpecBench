@@ -11,7 +11,12 @@ This repository provides a minimal, reproducible code release for PepSpecBench:
 
 Official reporting uses the shared canonical `level1` metrics only.
 
-## Data Sources
+## Dataset Access
+The fully processed, benchmark-ready datasets (including PROSPECT, MassIVE-KB, and OOD evaluation bundles) are hosted on Hugging Face:
+- **[PepSpecBench Dataset on Hugging Face](https://huggingface.co/datasets/Chris-young-2004/PepSpecBench)**
+
+## Raw Data Sources
+The benchmark is derived from the following original data releases:
 - PROSPECT: https://github.com/wilhelm-lab/PROSPECT
 - MassIVE-KB (Zenodo release): https://zenodo.org/records/14967861
 
