@@ -1,4 +1,3 @@
-````markdown
 # PepSpecBench
 
 <div align="center">
@@ -6,18 +5,17 @@
 [![arXiv](https://img.shields.io/badge/arXiv-2605.01945-b31b1b.svg)](https://arxiv.org/abs/2605.01945)
 [![NeurIPS 2026](https://img.shields.io/badge/NeurIPS-2026-blue)](https://neurips.cc/Conferences/2026)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![HF Dataset](https://img.shields.io/badge/%F0%9F%A4%97-Dataset-PepSpecBench-yellow)](https://huggingface.co/datasets/Chris-young-2004/PepSpecBench)
+[![HF Dataset](https://img.shields.io/badge/%F0%9F%A4%97%20Dataset-PepSpecBench-yellow)](https://huggingface.co/datasets/Chris-young-2004/PepSpecBench)
 
 </div>
 
-> 🎉 **PepSpecBench has been accepted to NeurIPS 2026** (Datasets and Benchmarks Track).
+> 🎉 **PepSpecBench has been accepted to NeurIPS 2026.**
 
 Unified benchmark for peptide MS/MS spectrum prediction.
 
 ## News
 - **[2026-09]** 🎉 Paper accepted to NeurIPS 2026.
 - **[2026-05]** arXiv preprint released: [arXiv:2605.01945](https://arxiv.org/abs/2605.01945).
-- **[2026-xx]** Code and benchmark datasets released.
 
 ## Introduction
 This repository provides a minimal, reproducible code release for **PepSpecBench** ([arXiv:2605.01945](https://arxiv.org/abs/2605.01945)):
@@ -26,7 +24,7 @@ This repository provides a minimal, reproducible code release for **PepSpecBench
 - metadata sensitivity analysis (NCE/charge),
 - figure/table regeneration scripts used in the paper.
 
-Official reporting uses the shared canonical metrics only (Note: referred to as 'level1' metrics in the codebase).
+Official reporting uses the shared canonical metrics only (referred to as `level1` metrics in the codebase).
 
 ## Dataset Access
 The fully processed, benchmark-ready datasets (including PROSPECT, MassIVE-KB, and OOD evaluation bundles) are hosted on Hugging Face:
@@ -102,7 +100,7 @@ cp src/models/runners/prosit_runner.py src/models/runners/my_model_runner.py
 - `fit(train_path, val_path, output_dir, config)`
 - `predict(parquet_path, model_dir, config)`
 
-3. Register the model key in `src/models/registry.py`.
+3. Register the model key in `src/models/registry.py`:
 ```python
 from src.models.runners.my_model_runner import MyModelRunner
 MODEL_REGISTRY["my_model"] = MyModelRunner
@@ -130,8 +128,10 @@ python scripts/run_benchmark.py --config configs/benchmark_mini.yaml --dataset p
 - Third-party baselines are not vendored; see `THIRD_PARTY.md` for upstream sources and license reminders.
 
 ## Citation
-If you use PepSpecBench in your research, please cite our NeurIPS 2026 paper:
 
+If you use PepSpecBench in your research, please cite:
+
+```bibtex
 @inproceedings{yang2026pepspecbench,
   title     = {PepSpecBench: A Unified Evaluation Benchmark for Peptide Tandem Mass Spectrometry Prediction},
   author    = {Yang, Zhiwen and Liu, Pan and Li, Yifan and Zhong, Yunhua and Xia, Jun},
@@ -141,7 +141,7 @@ If you use PepSpecBench in your research, please cite our NeurIPS 2026 paper:
   archivePrefix = {arXiv},
   url       = {https://arxiv.org/abs/2605.01945}
 }
+```
 
 ## License
 This project is licensed under the MIT License. See `LICENSE`.
-````
