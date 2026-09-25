@@ -1,13 +1,30 @@
+````markdown
 # PepSpecBench
+
+<div align="center">
+
+[![arXiv](https://img.shields.io/badge/arXiv-2605.01945-b31b1b.svg)](https://arxiv.org/abs/2605.01945)
+[![NeurIPS 2026](https://img.shields.io/badge/NeurIPS-2026-blue)](https://neurips.cc/Conferences/2026)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![HF Dataset](https://img.shields.io/badge/%F0%9F%A4%97-Dataset-PepSpecBench-yellow)](https://huggingface.co/datasets/Chris-young-2004/PepSpecBench)
+
+</div>
+
+> 🎉 **PepSpecBench has been accepted to NeurIPS 2026** (Datasets and Benchmarks Track).
 
 Unified benchmark for peptide MS/MS spectrum prediction.
 
+## News
+- **[2026-09]** 🎉 Paper accepted to NeurIPS 2026.
+- **[2026-05]** arXiv preprint released: [arXiv:2605.01945](https://arxiv.org/abs/2605.01945).
+- **[2026-xx]** Code and benchmark datasets released.
+
 ## Introduction
-This repository provides a minimal, reproducible code release for PepSpecBench:
+This repository provides a minimal, reproducible code release for **PepSpecBench** ([arXiv:2605.01945](https://arxiv.org/abs/2605.01945)):
 - unified in-domain benchmark entrypoint,
 - cross-species OOD evaluation,
 - metadata sensitivity analysis (NCE/charge),
-- figure/table regeneration scripts used by the manuscript.
+- figure/table regeneration scripts used in the paper.
 
 Official reporting uses the shared canonical metrics only (Note: referred to as 'level1' metrics in the codebase).
 
@@ -113,7 +130,18 @@ python scripts/run_benchmark.py --config configs/benchmark_mini.yaml --dataset p
 - Third-party baselines are not vendored; see `THIRD_PARTY.md` for upstream sources and license reminders.
 
 ## Citation
-If you use PepSpecBench, please cite the associated manuscript (BibTeX will be added in camera-ready release).
+If you use PepSpecBench in your research, please cite our NeurIPS 2026 paper:
+
+@inproceedings{yang2026pepspecbench,
+  title     = {PepSpecBench: A Unified Evaluation Benchmark for Peptide Tandem Mass Spectrometry Prediction},
+  author    = {Yang, Zhiwen and Liu, Pan and Li, Yifan and Zhong, Yunhua and Xia, Jun},
+  booktitle = {Advances in Neural Information Processing Systems 39 (NeurIPS 2026)},
+  year      = {2026},
+  eprint    = {2605.01945},
+  archivePrefix = {arXiv},
+  url       = {https://arxiv.org/abs/2605.01945}
+}
 
 ## License
 This project is licensed under the MIT License. See `LICENSE`.
+````
