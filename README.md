@@ -3,7 +3,7 @@
 <div align="center">
 
 [![arXiv](https://img.shields.io/badge/arXiv-2605.01945-b31b1b.svg)](https://arxiv.org/abs/2605.01945)
-[![NeurIPS 2026](https://img.shields.io/badge/NeurIPS-2026-blue)](https://neurips.cc/Conferences/2026)
+[![NeurIPS 2026](https://img.shields.io/badge/NeurIPS-2026-blue)]([https://neurips.cc/Conferences/2026](https://neurips.cc/virtual/2026/loc/sydney/poster/139229))
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![HF Dataset](https://img.shields.io/badge/%F0%9F%A4%97%20Dataset-PepSpecBench-yellow)](https://huggingface.co/datasets/Chris-young-2004/PepSpecBench)
 
